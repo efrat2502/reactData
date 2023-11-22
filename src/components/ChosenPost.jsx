@@ -27,12 +27,16 @@ const ChosenPost = () => {
   function showComments() {}
 
   return (
-    <div>
-      <span>{post.id}</span>
-      <h2>{post.title}</h2>
-      <p>{post.body}</p>
-      <button onClick={showComments}>comments</button>
-    </div>
+    <>
+      {post && (
+        <div>
+          <span>{post[0]?.id}</span>
+          <h2>{post[0]?.title}</h2>
+          <p>{post[0]?.body}</p>
+          <button onClick={showComments}>comments</button>
+        </div>
+      )}
+    </>
   );
 };
 
