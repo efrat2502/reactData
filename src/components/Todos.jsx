@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef, useSearchparams } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 const Todos = () => {
-  const [searchParams, setSearchParams] = useSearchparams();
+  const [searchParams, setSearchParams] = useSearchParams();
   let currentId;
   let allTodos = useRef([]);
   const [todos, setTodos] = useState([]);
@@ -15,7 +16,7 @@ const Todos = () => {
         setTodos(data);
         allTodos.current = data;
       });
-  }, []);
+  }, [searchParams]);
 
   function handleCheck(todoId) {
     const updatedTodos = todos.map((todo) => {
@@ -41,6 +42,7 @@ const Todos = () => {
   function handleSearch() {
     if (typeof parseInt(search) === "number") {
       setSearchParams({ id: search });
+      searchParams.get.id;
     }
   }
 
