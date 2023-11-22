@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [inputs, setInputs] = useState({ username: "", password: "" });
-  const [users, setUsers] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   let userId;
   const navigate = useNavigate();
@@ -12,22 +10,7 @@ function Login() {
     const { name, value } = e.target;
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
   }
-  //   useEffect(() => {
-  //     if (inputs.username && submitted) {
-  //       //   setSubmitted(false);
-  //       fetch(`http://localhost:3000/users?username=${inputs.username}`)
-  //         .then(console.log("fetched"))
-  //         .then((res) => res.json())
-  //         .then((data) => {
-  //           console.log(data);
-  //           setUsers(data);
-  //         })
-
-  //         .catch((error) => console.error("Error fetching users:", error));
-  //     }
-  //   }, [submitted]);
   function handleSubmit(e) {
-    setSubmitted(true);
     e.preventDefault();
     if (!inputs.username || !inputs.password) {
       setErrorMessage("please fill username and password");
@@ -37,12 +20,12 @@ function Login() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setUsers(data);
+        const user = data[0];
         data.forEach((user) => {
           if (user.website === inputs.password) {
             console.log("logged in");
-            localStorage.setItem("currentUser", JSON.stringify(user));
-            userId = data[0].id;
+            localStorage.setItem("currUser", JSON.stringify(user));
+            userId = user.id;
             navigate(`/users/${userId}/home`);
           } else {
             console.log("incorrect");
@@ -50,10 +33,11 @@ function Login() {
           }
         });
       })
-      .catch((error) => console.error("Error fetching users:", error));
+      .catch((error) => alert("Error fetching users:", error));
   }
   return (
     <>
+      <h1>LogIn</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username:
@@ -64,6 +48,7 @@ function Login() {
             onChange={handleChange}
           />
         </label>
+        <br />
         <label>
           Password:
           <input
@@ -73,6 +58,8 @@ function Login() {
             onChange={handleChange}
           />
         </label>
+        <br />
+
         <button type="submit">Login</button>
       </form>
       <p>{errorMessage}</p>

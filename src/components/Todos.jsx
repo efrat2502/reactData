@@ -4,8 +4,8 @@ const Todos = () => {
   const [todos, setTodos] = useState([]);
   const [search, setSearch] = useState("");
   useEffect(() => {
-    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    let currentId = currentUser.id;
+    let currUser = JSON.parse(localStorage.getItem("currUser"));
+    let currentId = currUser.id;
     fetch(`http://localhost:3000/todos?userId=${currentId}`)
       .then((res) => res.json())
       .then((data) => {

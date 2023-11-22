@@ -1,10 +1,10 @@
 import React from "react";
 
 const Home = () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currUser = JSON.parse(localStorage.getItem("currUser"));
   return (
     <div>
-      <p>hi {currentUser.name}!</p>
+      <p>hi {currUser.name}!</p>
       home
     </div>
   );
