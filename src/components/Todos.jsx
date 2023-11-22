@@ -29,11 +29,17 @@ const Todos = () => {
 
     setTodos(updatedTodos);
   }
+  // function handleSearch() {
+  //   const filteredTodos = allTodos.current.filter(
+  //     (todo) => todo.id === parseInt(search)
+  //   );
+  //   setTodos(filteredTodos);
+  // }
+
   function handleSearch() {
-    const filteredTodos = allTodos.current.filter(
-      (todo) => todo.id === parseInt(search)
-    );
-    setTodos(filteredTodos);
+    if (typeof parseInt(search) === "number") {
+      fetch(`http://localhost:3000/todos?userId=${currentId}`);
+    }
   }
   return (
     <div>
