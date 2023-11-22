@@ -13,6 +13,7 @@ import NoPage from "./components/NoPage";
 import AlbumPictures from "./components/AlbumPictures";
 import AddDetails from "./components/AddDetails";
 import { UserProvider } from "./components/UserContext";
+import ChosenPost from "./components/ChosenPost";
 function App() {
   return (
     <>
@@ -26,8 +27,12 @@ function App() {
             <Route path="/addDetails" element={<AddDetails />} />
             <Route path="/users/:id" element={<Layout />}>
               <Route path="home" element={<Home />} />
-              <Route path="posts" element={<Posts />} />
-              <Route path="albums" element={<Albums />}>
+              <Route path="posts">
+                <Route index element={<Posts />} />
+                <Route path=":id" element={<ChosenPost />} />
+              </Route>
+              <Route path="albums">
+                <Route index element={<Albums />} />
                 <Route path=":albumId" element={<AlbumPictures />} />
               </Route>
               <Route path="todos" element={<Todos />} />

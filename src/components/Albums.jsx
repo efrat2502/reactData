@@ -21,7 +21,7 @@ const Albums = () => {
     <div>
       <h1>Albums</h1>
       {albums.map((album) => (
-        <Link key={album.id} to={`users/${currentId}/albums/${album.id}`}>
+        <Link key={album.id} to={`./${album.id}`}>
           <div style={{ textAlign: "left" }}>
             <p>
               {album.id} : {album.title}
