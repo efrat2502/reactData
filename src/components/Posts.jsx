@@ -1,8 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "./UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Posts = () => {
   const [clicked, setClicked] = useState(false);
+  const navigate = useNavigate();
   // const { user, changeUser } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const user = JSON.parse(localStorage.getItem("currUser"));
@@ -30,19 +32,22 @@ const Posts = () => {
     getPosts();
   }, []);
 
+  function showMore(post) {
+    navigate(`./${post.id}`);
+  }
   function showComments() {}
   function showPosts() {
     return posts.map((post) => (
       <div key={post.id}>
         <span>{post.id}</span>
         <h4>{post.title}</h4>
-        <button onClick={() => setClicked(!clicked)}>show more</button>
-        {clicked && (
+        <button onClick={() => showMore(post)}>show more</button>
+        {/* {clicked && (
           <>
             <p>{post.body}</p>
             <button onClick={showComments}>comments</button>
           </>
-        )}
+        )} */}
       </div>
     ));
   }

@@ -12,6 +12,7 @@ import Welcome from "./components/Welcome";
 import NoPage from "./components/NoPage";
 import AddDetails from "./components/AddDetails";
 import { UserProvider } from "./components/UserContext";
+import ChosenPost from "./components/ChosenPost";
 function App() {
   return (
     <>
@@ -25,7 +26,10 @@ function App() {
             <Route path="/addDetails" element={<AddDetails />} />
             <Route path="/users/:id" element={<Layout />}>
               <Route path="home" element={<Home />} />
-              <Route path="posts" element={<Posts />} />
+              <Route path="posts">
+                <Route index element={<Posts />} />
+                <Route path=":id" element={<ChosenPost />} />
+              </Route>
               <Route path="albums" element={<Albums />} />
               <Route path="todos" element={<Todos />} />
               {/* <Route path="*" element={<NoPage />} /> */}
