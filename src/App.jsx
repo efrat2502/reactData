@@ -28,7 +28,7 @@ function App() {
               <Route path="home" element={<Home />} />
               <Route path="posts">
                 <Route index element={<Posts />} />
-                <Route path=":id" element={<ChosenPost />} />
+                <Route path=":postId" element={<ChosenPost />} />
               </Route>
               <Route path="albums" element={<Albums />} />
               <Route path="todos" element={<Todos />} />
