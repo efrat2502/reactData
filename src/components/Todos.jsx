@@ -6,6 +6,7 @@ const Todos = () => {
   let allTodos = useRef([]);
   const [todos, setTodos] = useState([]);
   const [search, setSearch] = useState("");
+  const [newTodo, setNewTodo] = useState("");
   useEffect(() => {
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
     currentId = currentUser.id;
@@ -45,13 +46,36 @@ const Todos = () => {
       searchParams.get.id;
     }
   }
+  function addTodo() {
+    setNewTodo({
+      userId: 1,
+      id: 1,
+      title: "delectus aut autem",
+      completed: false,
+    });
+    localStorage.setItem("currUser", JSON.stringify(updatedUser));
+    changeUser(updatedUser);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedUser),
+    };
+    fetch("http://localhost:3000/users", requestOptions)
+      .then((response) => response.json())
+      .then((data) => navigate(`/users/${data.id}/home`));
+  }
 
   return (
     <div>
       <h1>todos</h1>
       <label>
-        <button onClick={handleSearch}>search</button>{" "}
+        <button onClick={handleSearch}>search</button>
         <input onChange={(e) => setSearch(e.target.value)} />
+      </label>
+      <br></br>
+      <label>
+        <input onChange={(e) => setNewTodo(e.target.value)} />
+        <button onClick={addTodo}>add todo</button>
       </label>
       <ul>
         {todos.map((todo) => (
