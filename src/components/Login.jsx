@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
 function Login() {
   const [inputs, setInputs] = useState({ username: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
+  const { user, changeUser } = useContext(UserContext);
   let userId;
   const navigate = useNavigate();
   function handleChange(e) {
@@ -30,6 +32,7 @@ function Login() {
             console.log("logged in");
             localStorage.setItem("currUser", JSON.stringify(user));
             userId = user.id;
+            changeUser(user);
             navigate(`/users/${userId}/home`);
           } else {
             console.log("incorrect");

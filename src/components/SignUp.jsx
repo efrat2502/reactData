@@ -17,16 +17,16 @@ const SignUp = () => {
           `http://localhost:3000/users?username=${inputs.username}`
         );
         if (!response.ok) {
-          throw "error-idk";
+          throw "error";
         } else {
           const data = await response.json();
           console.log(data);
           checkUsernameAvailability(data);
+          // setUsers(data);
         }
       }
     } catch (error) {
       console.error("Error fetching users:", error);
-      alert("Error fetching users");
     }
   };
   function checkUsernameAvailability(data) {
@@ -38,6 +38,7 @@ const SignUp = () => {
   }
   function checkVerifyPassword() {
     if (inputs.password === inputs.verifyPassword) {
+      //change to useContext
       const currUser = { username: inputs.username, website: inputs.password };
       localStorage.setItem("currUser", JSON.stringify(currUser));
       changeUser(currUser);
