@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 function Login() {
   const [inputs, setInputs] = useState({ username: "", password: "" });
-  const [users, setUsers] = useState("");
+  const [users, setUsers] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   function handleChange(e) {
     const { name, value } = e.target;
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
   }
   useEffect(() => {
     if (inputs.username) {
+      //   setSubmitted(false);
       fetch(`http://localhost:3000/users?username=${inputs.username}`)
         .then(console.log("fetched"))
         .then((res) => res.json())
@@ -20,8 +22,16 @@ function Login() {
     }
   }, [submitted]);
   function handleSubmit(e) {
-    e.preventDefault();
     setSubmitted(true);
+    e.preventDefault();
+    users.forEach((user) => {
+      if (user.website === inputs.password) {
+        console.log("logged in");
+      } else {
+        console.log("incorrect");
+        setErrorMessage("username or password incorrect");
+      }
+    });
   }
   return (
     <>
@@ -46,6 +56,7 @@ function Login() {
         </label>
         <button type="submit">Login</button>
       </form>
+      <p>{errorMessage}</p>
     </>
   );
 }
