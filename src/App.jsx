@@ -10,6 +10,7 @@ import Todos from "./components/Todos";
 import Layout from "./components/Layout";
 import Welcome from "./components/Welcome";
 import NoPage from "./components/NoPage";
+import AlbumPictures from "./components/AlbumPictures";
 import AddDetails from "./components/AddDetails";
 import { UserProvider } from "./components/UserContext";
 function App() {
@@ -26,7 +27,9 @@ function App() {
             <Route path="/users/:id" element={<Layout />}>
               <Route path="home" element={<Home />} />
               <Route path="posts" element={<Posts />} />
-              <Route path="albums" element={<Albums />} />
+              <Route path="albums" element={<Albums />}>
+                <Route path=":albumId" element={<AlbumPictures />} />
+              </Route>
               <Route path="todos" element={<Todos />} />
               {/* <Route path="*" element={<NoPage />} /> */}
             </Route>
