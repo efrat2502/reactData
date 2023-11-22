@@ -9,25 +9,29 @@ import Albums from "./components/Albums";
 import Todos from "./components/Todos";
 import Layout from "./components/Layout";
 import Welcome from "./components/Welcome";
-
+import NoPage from "./components/NoPage";
+import AddDetails from "./components/AddDetails";
+import { UserProvider } from "./components/UserContext";
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Welcome />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/users" element={<Layout />}>
-            <Route path="home" element={<Home />} />
-            <Route path="posts" element={<Posts />} />
-            <Route path="albums" element={<Albums />} />
-            <Route path="todos" element={<Todos />} />
-            {/* <Route path="*" element={<NoPage />} /> */}
-          </Route>
-        </Routes>
+        <UserProvider>
+          <Routes>
+            <Route path="/" element={<Welcome />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<SignUp />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/addDetails" element={<AddDetails />} />
+            <Route path="/users" element={<Layout />}>
+              <Route path="home" element={<Home />} />
+              <Route path="posts" element={<Posts />} />
+              <Route path="albums" element={<Albums />} />
+              <Route path="todos" element={<Todos />} />
+              <Route path="*" element={<NoPage />} />
+            </Route>
+          </Routes>
+        </UserProvider>
       </BrowserRouter>
     </>
   );

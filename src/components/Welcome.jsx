@@ -11,7 +11,7 @@ const Welcome = () => {
             <Link to="/login">login</Link>
           </li>
           <li>
-            <Link to="/signup">signUp</Link>
+            <Link to="/register">signUp</Link>
           </li>
         </ul>
       </nav>
