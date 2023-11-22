@@ -10,6 +10,7 @@ import Todos from "./components/Todos";
 import Layout from "./components/Layout";
 import Welcome from "./components/Welcome";
 import NoPage from "./components/NoPage";
+import AlbumPictures from "./components/AlbumPictures";
 import AddDetails from "./components/AddDetails";
 import { UserProvider } from "./components/UserContext";
 import ChosenPost from "./components/ChosenPost";
@@ -30,7 +31,10 @@ function App() {
                 <Route index element={<Posts />} />
                 <Route path=":postId" element={<ChosenPost />} />
               </Route>
-              <Route path="albums" element={<Albums />} />
+              <Route path="albums">
+                <Route index element={<Albums />} />
+                <Route path=":albumId" element={<AlbumPictures />} />
+              </Route>
               <Route path="todos" element={<Todos />} />
               {/* <Route path="*" element={<NoPage />} /> */}
             </Route>
