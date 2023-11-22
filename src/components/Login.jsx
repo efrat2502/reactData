@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 function Login() {
   const [inputs, setInputs] = useState({ username: "", password: "" });
   const [users, setUsers] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
   function handleChange(e) {
     const { name, value } = e.target;
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
@@ -27,6 +30,7 @@ function Login() {
     users.forEach((user) => {
       if (user.website === inputs.password) {
         console.log("logged in");
+        navigate("/users/home");
       } else {
         console.log("incorrect");
         setErrorMessage("username or password incorrect");
