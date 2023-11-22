@@ -36,6 +36,10 @@ function Login() {
       .then(console.log("fetched"))
       .then((res) => res.json())
       .then((data) => {
+        if (data.length === 0) {
+          setErrorMessage("username or password incorrect");
+          return;
+        }
         console.log(data);
         setUsers(data);
         data.forEach((user) => {
@@ -49,8 +53,7 @@ function Login() {
             setErrorMessage("username or password incorrect");
           }
         });
-      })
-      .catch((error) => console.error("Error fetching users:", error));
+      });
   }
   return (
     <>

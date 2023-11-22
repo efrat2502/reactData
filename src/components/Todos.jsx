@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useSearchparams } from "react";
 const Todos = () => {
+  const [searchParams, setSearchParams] = useSearchparams();
+  let currentId;
   let allTodos = useRef([]);
   const [todos, setTodos] = useState([]);
   const [search, setSearch] = useState("");
   useEffect(() => {
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    let currentId = currentUser.id;
+    currentId = currentUser.id;
     fetch(`http://localhost:3000/todos?userId=${currentId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -38,9 +40,10 @@ const Todos = () => {
 
   function handleSearch() {
     if (typeof parseInt(search) === "number") {
-      fetch(`http://localhost:3000/todos?userId=${currentId}`);
+      setSearchParams({ id: search });
     }
   }
+
   return (
     <div>
       <h1>todos</h1>
