@@ -1,5 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useSearchparams } from "react";
 const Todos = () => {
+  const [searchParams, setSearchParams] = useSearchparams();
+  let currentId;
   let allTodos = useRef([]);
   const [todos, setTodos] = useState([]);
   const [search, setSearch] = useState("");
@@ -29,12 +31,19 @@ const Todos = () => {
 
     setTodos(updatedTodos);
   }
+  // function handleSearch() {
+  //   const filteredTodos = allTodos.current.filter(
+  //     (todo) => todo.id === parseInt(search)
+  //   );
+  //   setTodos(filteredTodos);
+  // }
+
   function handleSearch() {
-    const filteredTodos = allTodos.current.filter(
-      (todo) => todo.id === parseInt(search)
-    );
-    setTodos(filteredTodos);
+    if (typeof parseInt(search) === "number") {
+      setSearchParams({ id: search });
+    }
   }
+
   return (
     <div>
       <h1>todos</h1>

@@ -19,6 +19,10 @@ function Login() {
       .then(console.log("fetched"))
       .then((res) => res.json())
       .then((data) => {
+        if (data.length === 0) {
+          setErrorMessage("username or password incorrect");
+          return;
+        }
         console.log(data);
         const user = data[0];
         data.forEach((user) => {
