@@ -8,8 +8,8 @@ const Todos = () => {
   const [search, setSearch] = useState("");
   const [newTodo, setNewTodo] = useState("");
   useEffect(() => {
-    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    currentId = currentUser.id;
+    let currUser = JSON.parse(localStorage.getItem("currUser"));
+    let currentId = currUser.id;
     fetch(`http://localhost:3000/todos?userId=${currentId}`)
       .then((res) => res.json())
       .then((data) => {

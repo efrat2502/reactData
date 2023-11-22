@@ -28,7 +28,7 @@ function App() {
               <Route path="posts" element={<Posts />} />
               <Route path="albums" element={<Albums />} />
               <Route path="todos" element={<Todos />} />
-              <Route path="*" element={<NoPage />} />
+              {/* <Route path="*" element={<NoPage />} /> */}
             </Route>
           </Routes>
         </UserProvider>
