@@ -1,55 +1,55 @@
-import React, { useState, useEffect } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
 const SignUp = () => {
   const [inputs, setInputs] = useState({ username: "", password: "" });
-  //   const [users, setUsers] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const { user, changeUser } = useContext(UserContext);
+  const navigate = useNavigate();
   function handleChange(e) {
     const { name, value } = e.target;
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
   }
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        if (inputs.username) {
-          const response = await fetch(
-            `http://localhost:3000/users?username=${inputs.username}`
-          );
-          if (!response.ok) {
-            throw "error-idk";
-          } else {
-            const data = await response.json();
-            console.log(data);
-            checkUsernameAvailability(data);
-            // setUsers(data);
-          }
+  const fetchUsers = async () => {
+    try {
+      if (inputs.username) {
+        const response = await fetch(
+          `http://localhost:3000/users?username=${inputs.username}`
+        );
+        if (!response.ok) {
+          throw "error-idk";
+        } else {
+          const data = await response.json();
+          console.log(data);
+          checkUsernameAvailability(data);
+          // setUsers(data);
         }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      } finally {
-        setSubmitted(false);
       }
-    };
-    if (submitted) {
-      fetchUsers();
+    } catch (error) {
+      console.error("Error fetching users:", error);
     }
-  }, [submitted]);
-
+  };
   function checkUsernameAvailability(data) {
     if (data.length !== 0) {
       alert("This username already exists");
     } else {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputs),
-      };
-      fetch("http://localhost:3000/users", requestOptions);
+      checkVerifyPassword();
+    }
+  }
+  function checkVerifyPassword() {
+    if (inputs.password === inputs.verifyPassword) {
+      //change to useContext
+      const currUser = { username: inputs.username, website: inputs.password };
+      localStorage.setItem("currUser", JSON.stringify(currUser));
+      changeUser(currUser);
+      navigate("../addDetails");
+    } else {
+      alert("passwords not match");
     }
   }
   function handleSubmit(e) {
     e.preventDefault();
-    setSubmitted(true);
+    fetchUsers();
   }
   return (
     <div>
