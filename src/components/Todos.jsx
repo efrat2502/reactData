@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
 const Todos = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   let currentId;
   let allTodos = useRef([]);
   const [todos, setTodos] = useState([]);
   const [search, setSearch] = useState("");
   const [newTodo, setNewTodo] = useState("");
   const [sort, setSort] = useState("");
+  const [clickSearch, setClickSearch] = useState(false);
   let currUser = JSON.parse(localStorage.getItem("currUser"));
+
   currentId = currUser.id;
 
   function fetchTodos() {
@@ -32,6 +32,7 @@ const Todos = () => {
       }
 
       apiUrl += `&${searchUrl}`;
+      setClickSearch(false);
     }
     fetch(apiUrl)
       .then((res) => res.json())
@@ -42,7 +43,7 @@ const Todos = () => {
   }
   useEffect(() => {
     fetchTodos();
-  }, [sort, searchParams]);
+  }, [sort, clickSearch]);
 
   function handleCheck(todoId) {
     fetch(`http://localhost:3000/todos/${todoId}`, {
@@ -77,7 +78,7 @@ const Todos = () => {
   }
 
   function handleSearch() {
-    setSearchParams({ search: search });
+    setClickSearch(true);
   }
   function addTodo() {
     const newTodoObj = {

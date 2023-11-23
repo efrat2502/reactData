@@ -9,7 +9,6 @@ const ChosenPost = () => {
   const [comments, setComments] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const { postId } = useParams();
-  console.log("postId: ", postId);
 
   // get chosen post from db
   const getPost = async () => {
@@ -22,7 +21,6 @@ const ChosenPost = () => {
       } else {
         const resPost = await response.json();
         setPost(resPost);
-        console.log(resPost);
         setInputValue(resPost.body);
       }
     } catch (error) {
