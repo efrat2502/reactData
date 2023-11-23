@@ -16,18 +16,30 @@ const Albums = () => {
         setAlbums(data);
       });
   }, []);
+  function handleDelete() {
+    const requestOptions = {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch("http://localhost:3000/users", requestOptions).then((response) =>
+      response.json()
+    );
+  }
 
   return (
     <div>
       <h1>Albums</h1>
       {albums.map((album) => (
-        <Link key={album.id} to={`./${album.id}`}>
-          <div style={{ textAlign: "left" }}>
-            <p>
-              {album.id} : {album.title}
-            </p>
-          </div>
-        </Link>
+        <>
+          <Link key={album.id} to={`./${album.id}`}>
+            <div style={{ textAlign: "left" }}>
+              <p>
+                {album.id} : {album.title}
+              </p>
+            </div>
+          </Link>
+          <button onClick={handleDelete}>Delete</button>
+        </>
       ))}
     </div>
   );

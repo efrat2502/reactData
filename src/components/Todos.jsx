@@ -19,6 +19,19 @@ const Todos = () => {
     } else if (sort === "id") {
       apiUrl += `&_sort=id&_order=asc`;
     }
+    if (search) {
+      let searchUrl;
+      const input = search.trim();
+      if (!isNaN(input)) {
+        searchUrl = `id=${input}`;
+      } else if (input.toLowerCase() === "completed") {
+        searchUrl = `completed=true`;
+      } else {
+        searchUrl = `title_like=${input}`;
+      }
+
+      apiUrl += `&${searchUrl}`;
+    }
     fetch(apiUrl)
       .then((res) => res.json())
       .then((data) => {
@@ -26,7 +39,7 @@ const Todos = () => {
         setTodos(data);
         allTodos.current = data;
       });
-  }, [sort]);
+  }, [sort, searchParams]);
 
   function handleCheck(todoId) {
     const updatedTodos = todos.map((todo) => {
@@ -44,10 +57,7 @@ const Todos = () => {
   }
 
   function handleSearch() {
-    // if (typeof parseInt(search) === "number") {
-    //   setSearchParams({ id: search });
-    //   searchParams.get.id;
-    // }
+    setSearchParams({ search: search });
   }
   function addTodo() {
     const newTodoObj = {
@@ -65,6 +75,7 @@ const Todos = () => {
     fetch("http://localhost:3000/todos", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log("data: ", data);
         setNewTodo("");
         setTodos([...todos, data]);
       });
