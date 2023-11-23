@@ -21,7 +21,7 @@ const Layout = () => {
           <Link to="./todos">Todos</Link>
         </p>
         <button onClick={handleLogout}>
-          <Link to="/login">log out</Link>
+          <Link to="/">log out</Link>
         </button>
       </nav>
       <Outlet />
