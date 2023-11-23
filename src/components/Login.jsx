@@ -1,11 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./UserContext";
 
 function Login() {
   const [inputs, setInputs] = useState({ username: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
-  const { user, changeUser } = useContext(UserContext);
   let userId;
   const navigate = useNavigate();
   function handleChange(e) {
@@ -18,27 +16,22 @@ function Login() {
       setErrorMessage("please fill username and password");
     }
     fetch(`http://localhost:3000/users?username=${inputs.username}`)
-      .then(console.log("fetched"))
       .then((res) => res.json())
       .then((data) => {
         if (data.length === 0) {
           setErrorMessage("username or password incorrect");
           return;
         }
-        console.log(data);
         const user = data[0];
-        data.forEach((user) => {
-          if (user.website === inputs.password) {
-            console.log("logged in");
-            localStorage.setItem("currUser", JSON.stringify(user));
-            userId = user.id;
-            changeUser(user);
-            navigate(`/users/${userId}/home`);
-          } else {
-            console.log("incorrect");
-            setErrorMessage("username or password incorrect");
-          }
-        });
+        if (user.website === inputs.password) {
+          console.log("logged in");
+          localStorage.setItem("currUser", JSON.stringify(user));
+          userId = user.id;
+          navigate(`/users/${userId}/home`);
+        } else {
+          console.log("incorrect");
+          setErrorMessage("username or password incorrect");
+        }
       })
       .catch((error) => alert("Error fetching users:", error));
   }

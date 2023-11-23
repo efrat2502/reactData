@@ -2,6 +2,9 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 
 const Layout = () => {
+  function handleLogout() {
+    localStorage.removeItem("currUser");
+  }
   return (
     <>
       <nav>
@@ -17,6 +20,9 @@ const Layout = () => {
         <p>
           <Link to="./todos">Todos</Link>
         </p>
+        <button onClick={handleLogout}>
+          <Link to="/login">log out</Link>
+        </button>
       </nav>
       <Outlet />
     </>

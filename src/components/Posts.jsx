@@ -9,7 +9,6 @@ const Posts = () => {
   const [posts, setPosts] = useState([]);
   const user = JSON.parse(localStorage.getItem("currUser"));
   const getPosts = async () => {
-    console.log(user);
     try {
       // if (user.id) {
       const response = await fetch(
@@ -19,7 +18,6 @@ const Posts = () => {
         throw "error";
       } else {
         const resPosts = await response.json();
-        console.log(resPosts);
         setPosts(resPosts);
       }
     } catch (error) {
