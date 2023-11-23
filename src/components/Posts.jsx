@@ -35,19 +35,12 @@ const Posts = () => {
   function showMore(post) {
     navigate(`./${post.id}`);
   }
-  function showComments() {}
   function showPosts() {
     return posts.map((post) => (
       <div key={post.id}>
         <span>{post.id}</span>
         <h4>{post.title}</h4>
         <button onClick={() => showMore(post)}>show more</button>
-        {/* {clicked && (
-          <>
-            <p>{post.body}</p>
-            <button onClick={showComments}>comments</button>
-          </>
-        )} */}
       </div>
     ));
   }
