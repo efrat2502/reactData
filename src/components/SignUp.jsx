@@ -1,10 +1,8 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./UserContext";
 
 const SignUp = () => {
   const [inputs, setInputs] = useState({ username: "", password: "" });
-  const { user, changeUser } = useContext(UserContext);
   const navigate = useNavigate();
   function handleChange(e) {
     const { name, value } = e.target;
@@ -21,8 +19,11 @@ const SignUp = () => {
         } else {
           const data = await response.json();
           console.log(data);
-          checkUsernameAvailability(data);
-          // setUsers(data);
+          if (checkUsernameAvailability(data)) {
+            const currUser = data;
+            localStorage.setItem("currUser", JSON.stringify(currUser));
+            navigate("../addDetails");
+          }
         }
       }
     } catch (error) {
@@ -32,19 +33,17 @@ const SignUp = () => {
   function checkUsernameAvailability(data) {
     if (data.length !== 0) {
       alert("This username already exists");
+      return false;
     } else {
-      checkVerifyPassword();
+      return checkVerifyPassword();
     }
   }
   function checkVerifyPassword() {
     if (inputs.password === inputs.verifyPassword) {
-      //change to useContext
-      const currUser = { username: inputs.username, website: inputs.password };
-      localStorage.setItem("currUser", JSON.stringify(currUser));
-      changeUser(currUser);
-      navigate("../addDetails");
+      return true;
     } else {
       alert("passwords not match");
+      return false;
     }
   }
   function handleSubmit(e) {
