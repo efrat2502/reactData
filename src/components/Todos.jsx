@@ -77,7 +77,7 @@ const Todos = () => {
       .then((data) => {
         console.log("data: ", data);
         setNewTodo("");
-        fetchTodos();
+        setTodos((prev) => [...prev, data]);
       });
   }
 

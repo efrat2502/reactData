@@ -4,19 +4,32 @@ import { useParams } from "react-router-dom";
 const AlbumPictures = () => {
   const { albumId } = useParams();
   const [pictures, setPictures] = useState([]);
-  const [endNum, setEndNum] = useState(10);
+  const [range, setRange] = useState({ start: 0, end: 10 });
+  const [showMoreBtn, setShowMoreBtn] = useState(
+    <button onClick={showMore}>Show more</button>
+  );
 
   useEffect(() => {
     fetch(
-      `http://localhost:3000/photos?albumId=${albumId}&_start=0&_end=${endNum}`
+      `http://localhost:3000/photos?albumId=${albumId}&_start=${range.start}&_end=${range.end}`
     )
       .then((res) => res.json())
       .then((data) => {
         console.log("pictures:", data);
-        setPictures(data);
+        setPictures((prev) => [...prev, ...data]);
+        if (data.length === 0) {
+          console.log("data == []: ", data == []);
+          setShowMoreBtn(null);
+        }
       });
-  }, [albumId, endNum]);
+  }, [albumId, range]);
 
+  function showMore() {
+    setRange((prev) => ({
+      start: prev.start + 10,
+      end: prev.end + 10,
+    }));
+  }
   return (
     <div>
       <h2>Pictures of Album {albumId}</h2>
@@ -24,7 +37,8 @@ const AlbumPictures = () => {
       {pictures.map((picture) => (
         <img key={picture.id} src={picture.url} width="100px" />
       ))}
-      <button onClick={() => setEndNum((prev) => prev + 10)}>show more</button>
+
+      {showMoreBtn}
     </div>
   );
 };

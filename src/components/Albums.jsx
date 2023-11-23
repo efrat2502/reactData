@@ -25,7 +25,7 @@ const Albums = () => {
     };
     fetch(`http://localhost:3000/albums/${albumId}`, requestOptions)
       .then((response) => response.json())
-      .then(() => fetchPosts());
+      .then(setAlbums(albums.filter((album) => album.id !== albumId)));
   }
 
   return (
