@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 const Layout = () => {
   return (
     <>
-      <button>info</button>
       <nav>
         <p>
           <Link to="./home">Home</Link>

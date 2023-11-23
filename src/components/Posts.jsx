@@ -13,7 +13,7 @@ const Posts = () => {
     try {
       // if (user.id) {
       const response = await fetch(
-        `http://localhost:3000/posts?_page=${user.id}`
+        `http://localhost:3000/posts?userId=${user.id}`
       );
       if (!response.ok) {
         throw "error";
@@ -36,13 +36,15 @@ const Posts = () => {
     navigate(`./${post.id}`);
   }
   function showPosts() {
-    return posts.map((post) => (
-      <div key={post.id}>
-        <span>{post.id}</span>
-        <h4>{post.title}</h4>
-        <button onClick={() => showMore(post)}>show more</button>
-      </div>
-    ));
+    if (posts.length !== 0) {
+      return posts.map((post) => (
+        <div key={post.id}>
+          <span>{post.id}</span>
+          <h4>{post.title}</h4>
+          <button onClick={() => showMore(post)}>show more</button>
+        </div>
+      ));
+    }
   }
   return (
     <div>
