@@ -15,10 +15,8 @@ const AlbumPictures = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log("pictures:", data);
         setPictures((prev) => [...prev, ...data]);
         if (data.length === 0) {
-          console.log("data == []: ", data == []);
           setShowMoreBtn(null);
         }
       });

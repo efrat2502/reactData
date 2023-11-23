@@ -36,7 +36,6 @@ const Todos = () => {
     fetch(apiUrl)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setTodos(data);
         allTodos.current = data;
       });
@@ -46,14 +45,35 @@ const Todos = () => {
   }, [sort, searchParams]);
 
   function handleCheck(todoId) {
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === todoId) {
-        return { ...todo, completed: !todo.completed };
-      }
-      return todo;
-    });
+    fetch(`http://localhost:3000/todos/${todoId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-    setTodos(updatedTodos);
+      body: JSON.stringify({
+        completed: !todos.find((todo) => todo.id === todoId).completed,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(() => {
+        const updatedTodos = todos.map((todo) => {
+          if (todo.id === todoId) {
+            return { ...todo, completed: !todo.completed };
+          }
+          return todo;
+        });
+
+        setTodos(updatedTodos);
+      })
+      .catch((error) => {
+        alert("There was a problem with the fetch operation:", error);
+      });
   }
 
   function handleSearch() {
@@ -66,7 +86,6 @@ const Todos = () => {
       completed: false,
     };
     setNewTodo(newTodoObj);
-    console.log("newTodoObj: ", newTodoObj);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -75,7 +94,6 @@ const Todos = () => {
     fetch("http://localhost:3000/todos", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log("data: ", data);
         setNewTodo("");
         setTodos((prev) => [...prev, data]);
       });
@@ -137,10 +155,3 @@ const Todos = () => {
 };
 
 export default Todos;
-
-// function handleSearch() {
-//   const filteredTodos = allTodos.current.filter(
-//     (todo) => todo.id === parseInt(search)
-//   );
-//   setTodos(filteredTodos);
-// }
