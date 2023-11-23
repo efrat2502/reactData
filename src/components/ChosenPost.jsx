@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const ChosenPost = () => {
-  const [endNum, setEndNum] = useState(4);
-  const [startNum, setStartNum] = useState(0);
   const [post, setPost] = useState({});
   const [showComments, setShowComments] = useState(false);
-  const [comments, setComments] = useState([]);
+  const [clickedEdit, setClickedEdit] = useState(false);
+  const [submittedEdit, setSubmittedEdit] = useState(false);
 
+  const [comments, setComments] = useState([]);
+  const [inputValue, setInputValue] = useState("");
   const { postId } = useParams();
   console.log("postId: ", postId);
 
@@ -23,6 +24,7 @@ const ChosenPost = () => {
         const resPost = await response.json();
         setPost(resPost);
         console.log(resPost);
+        setInputValue(resPost.body);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -36,15 +38,66 @@ const ChosenPost = () => {
 
   useEffect(() => {
     getPost();
-  }, [showComments]);
+  }, [showComments, submittedEdit]);
 
+  function editPost() {
+    fetch(`http://localhost:3000/posts/${postId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        body: inputValue,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }
+
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+  const handleSubmitEdit = () => {
+    setSubmittedEdit((prev) => !prev);
+    editPost();
+    setClickedEdit((prev) => !prev);
+  };
   return (
     <>
       {post && (
         <div>
           <span>{post?.id}</span>
           <h2>{post?.title}</h2>
-          <p>{post?.body}</p>
+          {clickedEdit ? (
+            <>
+              <textarea
+                value={inputValue}
+                onChange={handleChange}
+                style={{ width: "50vw", height: "20vh" }}
+              />
+              <br />
+              <button onClick={handleSubmitEdit}>submit</button>
+            </>
+          ) : (
+            <>
+              <p>{post?.body}</p>
+              <button onClick={() => setClickedEdit((prev) => !prev)}>
+                edit text
+              </button>
+            </>
+          )}
+          <br />
+          <hr />
           <button onClick={() => setShowComments((prev) => !prev)}>💬</button>
           {showComments && (
             <>
@@ -58,14 +111,6 @@ const ChosenPost = () => {
                   <p>{comment.body}</p>
                 </div>
               ))}
-              <button
-                onClick={() => {
-                  setStartNum((prev) => prev + endNum);
-                  setEndNum((prev) => prev + 10);
-                }}
-              >
-                show more
-              </button>
             </>
           )}
         </div>
