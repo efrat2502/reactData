@@ -1,11 +1,9 @@
-import React, { useContext, useState } from "react";
-import { UserContext } from "./UserContext";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddDetails = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ name: "", email: "", phone: "" });
-  const { user, changeUser } = useContext(UserContext);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -23,8 +21,6 @@ const AddDetails = () => {
       email: inputs.email,
       phone: inputs.phone,
     };
-    localStorage.setItem("currUser", JSON.stringify(updatedUser));
-    changeUser(updatedUser);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -32,7 +28,10 @@ const AddDetails = () => {
     };
     fetch("http://localhost:3000/users", requestOptions)
       .then((response) => response.json())
-      .then((data) => navigate(`/users/${data.id}/home`));
+      .then((data) => {
+        localStorage.setItem("currUser", JSON.stringify(data));
+        navigate(`/users/${data.id}/home`);
+      });
   }
   return (
     <div>
