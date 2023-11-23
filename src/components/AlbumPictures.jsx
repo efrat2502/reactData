@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const AlbumPictures = () => {
@@ -12,7 +12,7 @@ const AlbumPictures = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log("pictures:", data);
         setPictures(data);
       });
   }, [albumId, endNum]);

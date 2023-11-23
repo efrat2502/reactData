@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 const Todos = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -8,9 +8,10 @@ const Todos = () => {
   const [search, setSearch] = useState("");
   const [newTodo, setNewTodo] = useState("");
   const [sort, setSort] = useState("");
-  useEffect(() => {
-    let currUser = JSON.parse(localStorage.getItem("currUser"));
-    currentId = currUser.id;
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  currentId = currUser.id;
+
+  function fetchTodos() {
     let apiUrl = `http://localhost:3000/todos?userId=${currentId}`;
     if (sort === "alphabetically") {
       apiUrl += `&_sort=title&_order=asc`;
@@ -39,15 +40,14 @@ const Todos = () => {
         setTodos(data);
         allTodos.current = data;
       });
+  }
+  useEffect(() => {
+    fetchTodos();
   }, [sort, searchParams]);
 
   function handleCheck(todoId) {
     const updatedTodos = todos.map((todo) => {
       if (todo.id === todoId) {
-        console.log("   return { ...todo, completed: !todo.completed }: ", {
-          ...todo,
-          completed: !todo.completed,
-        });
         return { ...todo, completed: !todo.completed };
       }
       return todo;
@@ -77,9 +77,10 @@ const Todos = () => {
       .then((data) => {
         console.log("data: ", data);
         setNewTodo("");
-        setTodos([...todos, data]);
+        fetchTodos();
       });
   }
+
   function sortTodos(value) {
     if (value === "alphabetically") {
       setSort("alphabetically");
