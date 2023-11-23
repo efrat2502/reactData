@@ -54,7 +54,10 @@ const ChosenPost = () => {
         return response.json();
       })
       .then((data) => {
-        setPost(data);
+        setPost((prevPost) => ({
+          ...prevPost,
+          body: data.body,
+        }));
       })
       .catch((error) => {
         alert("There was a problem with the fetch operation:", error);
@@ -66,8 +69,8 @@ const ChosenPost = () => {
   };
   const handleSubmitEdit = () => {
     setSubmittedEdit((prev) => !prev);
-    editPost();
     setClickedEdit((prev) => !prev);
+    editPost();
   };
   return (
     <>
@@ -99,9 +102,9 @@ const ChosenPost = () => {
           <br />
           <hr />
           <button onClick={() => setShowComments((prev) => !prev)}>💬</button>
-          {showComments && (
+          {showComments && post && (
             <>
-              {post.comments.map((comment) => (
+              {post?.comments?.map((comment) => (
                 <div
                   style={{ backgroundColor: "powderblue", margin: "10px" }}
                   key={comment.id}
