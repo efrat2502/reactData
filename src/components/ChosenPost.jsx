@@ -6,7 +6,6 @@ const ChosenPost = () => {
   const [showComments, setShowComments] = useState(false);
   const [clickedEdit, setClickedEdit] = useState(false);
   const [submittedEdit, setSubmittedEdit] = useState(false);
-
   const [comments, setComments] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const { postId } = useParams();
@@ -19,7 +18,7 @@ const ChosenPost = () => {
         `http://localhost:3000/posts/${postId}?_embed=comments`
       );
       if (!response.ok) {
-        throw "error";
+        throw new Error("Network response was not ok");
       } else {
         const resPost = await response.json();
         setPost(resPost);
@@ -27,7 +26,7 @@ const ChosenPost = () => {
         setInputValue(resPost.body);
       }
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      alert("There was a problem with the fetch operation:", error);
     }
   };
 
@@ -38,7 +37,7 @@ const ChosenPost = () => {
 
   useEffect(() => {
     getPost();
-  }, [showComments, submittedEdit]);
+  }, [showComments]);
 
   function editPost() {
     fetch(`http://localhost:3000/posts/${postId}`, {
@@ -57,10 +56,10 @@ const ChosenPost = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        setPost(data);
       })
       .catch((error) => {
-        console.error("There was a problem with the fetch operation:", error);
+        alert("There was a problem with the fetch operation:", error);
       });
   }
 
@@ -87,12 +86,15 @@ const ChosenPost = () => {
               />
               <br />
               <button onClick={handleSubmitEdit}>submit</button>
+              <button onClick={() => setClickedEdit((prev) => !prev)}>
+                cancel
+              </button>
             </>
           ) : (
             <>
               <p>{post?.body}</p>
               <button onClick={() => setClickedEdit((prev) => !prev)}>
-                edit text
+                edit text✏️
               </button>
             </>
           )}

@@ -94,17 +94,17 @@ const Todos = () => {
   return (
     <div>
       <h1>todos</h1>
-      <label>
-        <button onClick={handleSearch}>search</button>
-        <input onChange={(e) => setSearch(e.target.value)} />
-      </label>
-      <br></br>
       <select value={sort} onChange={(e) => sortTodos(e.target.value)}>
         <option>sort by</option>
         <option value="id">id</option>
         <option value="alphabetically">alphabetically</option>
         <option value="completed">completed</option>
       </select>
+      <br></br>
+      <label>
+        <input onChange={(e) => setSearch(e.target.value)} />
+        <button onClick={handleSearch}>search</button>
+      </label>
       <br></br>
       <label>
         <input
